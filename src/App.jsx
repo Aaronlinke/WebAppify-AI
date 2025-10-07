@@ -3,16 +3,16 @@ import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.jsx'
-import { 
-  Code, 
-  Smartphone, 
-  Zap, 
-  Users, 
-  Target, 
-  Rocket, 
-  Brain, 
-  Globe, 
-  CheckCircle, 
+import {
+  Code,
+  Smartphone,
+  Zap,
+  Users,
+  Target,
+  Rocket,
+  Brain,
+  Globe,
+  CheckCircle,
   Star,
   ArrowRight,
   Download,
@@ -38,6 +38,25 @@ function App() {
     }, 3000)
     return () => clearInterval(interval)
   }, [])
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const handleCtaClick = (action) => {
+    if (action === 'test') {
+      alert('Vielen Dank für Ihr Interesse! Die kostenlose Testversion wird bald verfügbar sein.')
+    } else if (action === 'demo') {
+      alert('Eine interaktive Demo ist in Vorbereitung! Bleiben Sie dran für Updates.')
+    } else if (action === 'contact') {
+      alert('Vielen Dank für Ihr Interesse! Bitte kontaktieren Sie uns unter info@webappify.ai.')
+    } else if (action === 'start') {
+      alert('Vielen Dank! Sie werden zum Registrierungsformular weitergeleitet, sobald es verfügbar ist.')
+    }
+  }
 
   const features = [
     {
@@ -135,10 +154,10 @@ function App() {
               <span className="text-xl font-bold text-slate-900">WebAppify AI</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-slate-600 hover:text-blue-600 transition-colors">Features</a>
-              <a href="#zielgruppen" className="text-slate-600 hover:text-blue-600 transition-colors">Zielgruppen</a>
-              <a href="#preise" className="text-slate-600 hover:text-blue-600 transition-colors">Preise</a>
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <a href="#features" onClick={() => scrollToSection('features')} className="text-slate-600 hover:text-blue-600 transition-colors">Features</a>
+              <a href="#zielgruppen" onClick={() => scrollToSection('zielgruppen')} className="text-slate-600 hover:text-blue-600 transition-colors">Zielgruppen</a>
+              <a href="#preise" onClick={() => scrollToSection('preise')} className="text-slate-600 hover:text-blue-600 transition-colors">Preise</a>
+              <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => handleCtaClick('start')}>
                 Jetzt starten
               </Button>
             </div>
@@ -160,17 +179,17 @@ function App() {
                   <span className="block text-blue-600">Die Zukunft der PWA-Entwicklung</span>
                 </h1>
                 <p className="text-xl text-slate-600 leading-relaxed">
-                  Erstellen Sie mühelos hochwertige Progressive Web Apps mit der Kraft der künstlichen Intelligenz. 
+                  Erstellen Sie mühelos hochwertige Progressive Web Apps mit der Kraft der künstlichen Intelligenz.
                   Von der Idee zur fertigen App in wenigen Minuten – ohne komplexe Programmierung.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4" onClick={() => handleCtaClick('test')}>
                   <Play className="w-5 h-5 mr-2" />
                   Kostenlos testen
                 </Button>
-                <Button size="lg" variant="outline" className="border-slate-300 px-8 py-4">
+                <Button size="lg" variant="outline" className="border-slate-300 px-8 py-4" onClick={() => handleCtaClick('demo')}>
                   <Download className="w-5 h-5 mr-2" />
                   Demo ansehen
                 </Button>
@@ -190,9 +209,9 @@ function App() {
 
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src={heroImage} 
-                  alt="WebAppify AI Platform" 
+                <img
+                  src={heroImage}
+                  alt="WebAppify AI Platform"
                   className="w-full h-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent"></div>
@@ -217,15 +236,15 @@ function App() {
               Revolutionäre Features
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              WebAppify AI kombiniert modernste KI-Technologie mit benutzerfreundlichem Design, 
+              WebAppify AI kombiniert modernste KI-Technologie mit benutzerfreundlichem Design,
               um die PWA-Entwicklung zu revolutionieren.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {features.map((feature, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`transition-all duration-500 hover:shadow-lg cursor-pointer ${
                   activeFeature === index ? 'ring-2 ring-blue-500 shadow-lg' : ''
                 }`}
@@ -247,9 +266,9 @@ function App() {
           </div>
 
           <div className="relative rounded-2xl overflow-hidden">
-            <img 
-              src={aiWebDev} 
-              alt="AI Web Development" 
+            <img
+              src={aiWebDev}
+              alt="AI Web Development"
               className="w-full h-64 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-purple-900/80 flex items-center justify-center">
@@ -556,8 +575,9 @@ function App() {
                       </li>
                     ))}
                   </ul>
-                  <Button 
-                    className={`w-full mt-6 ${plan.popular ? 'bg-blue-600 hover:bg-blue-700' : 'bg-slate-600 hover:bg-slate-700'}`}
+                  <Button
+                    className={`w-full mt-6 ${plan.name === 'Enterprise' ? 'bg-slate-600 hover:bg-slate-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+                    onClick={() => handleCtaClick(plan.name === 'Enterprise' ? 'contact' : 'start')}
                   >
                     {plan.name === 'Enterprise' ? 'Kontakt aufnehmen' : 'Jetzt starten'}
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -589,7 +609,7 @@ function App() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Im Gegensatz zu herkömmlichen PWA-Generatoren nutzen wir fortschrittliche KI 
+                  Im Gegensatz zu herkömmlichen PWA-Generatoren nutzen wir fortschrittliche KI
                   zur automatischen Code-Optimierung und Verbesserung der Benutzererfahrung.
                 </CardDescription>
               </CardContent>
@@ -602,7 +622,7 @@ function App() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Unsere KI analysiert bestehende Webinhalte und schlägt automatisch 
+                  Unsere KI analysiert bestehende Webinhalte und schlägt automatisch
                   sinnvolle Erweiterungen und Verbesserungen vor.
                 </CardDescription>
               </CardContent>
@@ -615,7 +635,7 @@ function App() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Entwickelt für sowohl Entwickler als auch Nicht-Entwickler, 
+                  Entwickelt für sowohl Entwickler als auch Nicht-Entwickler,
                   mit intuitiver Bedienung und professionellen Ergebnissen.
                 </CardDescription>
               </CardContent>
@@ -634,11 +654,11 @@ function App() {
             Starten Sie noch heute und erleben Sie, wie KI Ihre Entwicklungsprozesse revolutioniert.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4" onClick={() => handleCtaClick('start')}>
               <Rocket className="w-5 h-5 mr-2" />
               Kostenlos starten
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4" onClick={() => handleCtaClick('demo')}>
               Mehr erfahren
             </Button>
           </div>
@@ -658,38 +678,38 @@ function App() {
                 Die Zukunft der PWA-Entwicklung mit künstlicher Intelligenz.
               </p>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Produkt</h3>
               <ul className="space-y-2 text-slate-400">
-                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Preise</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Dokumentation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+                <li><a href="#features" onClick={() => scrollToSection('features')} className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#preise" onClick={() => scrollToSection('preise')} className="hover:text-white transition-colors">Preise</a></li>
+                <li><a href="#" onClick={() => alert('Dokumentation ist in Arbeit!')} className="hover:text-white transition-colors">Dokumentation</a></li>
+                <li><a href="#" onClick={() => alert('API-Informationen folgen bald!')} className="hover:text-white transition-colors">API</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Unternehmen</h3>
               <ul className="space-y-2 text-slate-400">
-                <li><a href="#" className="hover:text-white transition-colors">Über uns</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Karriere</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Kontakt</a></li>
+                <li><a href="#" onClick={() => alert('Informationen über uns folgen bald!')} className="hover:text-white transition-colors">Über uns</a></li>
+                <li><a href="#" onClick={() => alert('Karrierechancen werden bald veröffentlicht!')} className="hover:text-white transition-colors">Karriere</a></li>
+                <li><a href="#" onClick={() => alert('Unser Blog ist in Vorbereitung!')} className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" onClick={() => handleCtaClick('contact')} className="hover:text-white transition-colors">Kontakt</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-slate-400">
-                <li><a href="#" className="hover:text-white transition-colors">Hilfe-Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Datenschutz</a></li>
+                <li><a href="#" onClick={() => alert('Hilfe-Center ist in Arbeit!')} className="hover:text-white transition-colors">Hilfe-Center</a></li>
+                <li><a href="#" onClick={() => alert('Community-Forum kommt bald!')} className="hover:text-white transition-colors">Community</a></li>
+                <li><a href="#" onClick={() => alert('Systemstatus ist stabil!')} className="hover:text-white transition-colors">Status</a></li>
+                <li><a href="#" onClick={() => alert('Datenschutzrichtlinien sind in Vorbereitung!')} className="hover:text-white transition-colors">Datenschutz</a></li>
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-slate-800 mt-12 pt-8 text-center text-slate-400">
             <p>&copy; 2024 WebAppify AI. Alle Rechte vorbehalten.</p>
           </div>
