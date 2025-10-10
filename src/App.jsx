@@ -21,8 +21,10 @@ import {
   Lightbulb,
   TrendingUp,
   Shield,
-  Clock
+  Clock,
+  Save
 } from 'lucide-react'
+import MonacoEditor from 'react-monaco-editor'
 import heroImage from './assets/hero-image.jpg'
 import aiWebDev from './assets/ai-web-dev.webp'
 import './App.css'
@@ -30,6 +32,8 @@ import './App.css'
 function App() {
   const [activeFeature, setActiveFeature] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const [ctaMessage, setCtaMessage] = useState('')
+  const [editorCode, setEditorCode] = useState(localStorage.getItem('savedCode') || '// Beginnen Sie hier mit dem Schreiben Ihres Codes...')
 
   useEffect(() => {
     setIsVisible(true)
@@ -47,15 +51,30 @@ function App() {
   }
 
   const handleCtaClick = (action) => {
-    if (action === 'test') {
-      alert('Vielen Dank für Ihr Interesse! Die kostenlose Testversion wird bald verfügbar sein.')
-    } else if (action === 'demo') {
-      alert('Eine interaktive Demo ist in Vorbereitung! Bleiben Sie dran für Updates.')
-    } else if (action === 'contact') {
-      alert('Vielen Dank für Ihr Interesse! Bitte kontaktieren Sie uns unter info@webappify.ai.')
-    } else if (action === 'start') {
-      alert('Vielen Dank! Sie werden zum Registrierungsformular weitergeleitet, sobald es verfügbar ist.')
+    let message = ''
+    switch (action) {
+      case 'test':
+        message = 'Vielen Dank für Ihr Interesse! Die kostenlose Testversion wird bald verfügbar sein. Bleiben Sie dran für Updates!'
+        break
+      case 'demo':
+        message = 'Eine interaktive Demo ist in Vorbereitung! Wir arbeiten daran, Ihnen bald eine spannende Vorschau zu bieten.'
+        break
+      case 'contact':
+        message = 'Vielen Dank für Ihre Anfrage! Bitte kontaktieren Sie uns unter info@webappify.ai. Wir melden uns umgehend bei Ihnen.'
+        break
+      case 'start':
+        message = 'Willkommen bei WebAppify AI! Sie werden zum Registrierungsformular weitergeleitet, sobald es verfügbar ist. Wir freuen uns auf Sie!'
+        break
+      default:
+        message = 'Aktion nicht erkannt.'
     }
+    setCtaMessage(message)
+    setTimeout(() => setCtaMessage(''), 5000) // Nachricht nach 5 Sekunden ausblenden
+  }
+
+  const handleEditorChange = (newValue) => {
+    setEditorCode(newValue)
+    localStorage.setItem('savedCode', newValue) // Code im lokalen Speicher speichern
   }
 
   const features = [
@@ -165,6 +184,13 @@ function App() {
         </div>
       </nav>
 
+      {/* CTA Message Display */}
+      {ctaMessage && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in-down">
+          {ctaMessage}
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className={`relative py-20 px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto">
@@ -203,7 +229,7 @@ function App() {
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
                   <span>Sofort einsatzbereit</span>
-                </div>
+                }
               </div>
             </div>
 
@@ -277,6 +303,42 @@ function App() {
                 <p className="text-lg opacity-90">Intelligente Code-Optimierung in Echtzeit</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Simulated Code Editor Section */}
+      <section className="py-20 bg-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              Simulierter Online Code-Editor
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              Experimentieren Sie mit Code und sehen Sie sofortige Ergebnisse. Ihr Code wird lokal gespeichert.
+            </p>
+          </div>
+          <div className="rounded-lg overflow-hidden shadow-xl border border-slate-200">
+            <div className="flex justify-between items-center bg-slate-800 text-white p-3">
+              <span className="font-mono text-sm">index.html</span>
+              <Button variant="ghost" size="sm" className="text-white hover:bg-slate-700" onClick={() => localStorage.setItem('savedCode', editorCode)}>
+                <Save className="w-4 h-4 mr-2" /> Code speichern
+              </Button>
+            </div>
+            <MonacoEditor
+              width="100%"
+              height="400"
+              language="html"
+              theme="vs-dark"
+              value={editorCode}
+              onChange={handleEditorChange}
+              options={{
+                selectOnLineNumbers: true,
+                minimap: { enabled: false },
+                fontSize: 14,
+                scrollBeyondLastLine: false,
+              }}
+            />
           </div>
         </div>
       </section>
@@ -684,17 +746,17 @@ function App() {
               <ul className="space-y-2 text-slate-400">
                 <li><a href="#features" onClick={() => scrollToSection('features')} className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#preise" onClick={() => scrollToSection('preise')} className="hover:text-white transition-colors">Preise</a></li>
-                <li><a href="#" onClick={() => alert('Dokumentation ist in Arbeit!')} className="hover:text-white transition-colors">Dokumentation</a></li>
-                <li><a href="#" onClick={() => alert('API-Informationen folgen bald!')} className="hover:text-white transition-colors">API</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Dokumentation ist in Arbeit!')} className="hover:text-white transition-colors">Dokumentation</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('API-Informationen folgen bald!')} className="hover:text-white transition-colors">API</a></li>
               </ul>
             </div>
 
             <div>
               <h3 className="font-semibold mb-4">Unternehmen</h3>
               <ul className="space-y-2 text-slate-400">
-                <li><a href="#" onClick={() => alert('Informationen über uns folgen bald!')} className="hover:text-white transition-colors">Über uns</a></li>
-                <li><a href="#" onClick={() => alert('Karrierechancen werden bald veröffentlicht!')} className="hover:text-white transition-colors">Karriere</a></li>
-                <li><a href="#" onClick={() => alert('Unser Blog ist in Vorbereitung!')} className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Informationen über uns folgen bald!')} className="hover:text-white transition-colors">Über uns</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Karrierechancen werden bald veröffentlicht!')} className="hover:text-white transition-colors">Karriere</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Unser Blog ist in Vorbereitung!')} className="hover:text-white transition-colors">Blog</a></li>
                 <li><a href="#" onClick={() => handleCtaClick('contact')} className="hover:text-white transition-colors">Kontakt</a></li>
               </ul>
             </div>
@@ -702,10 +764,10 @@ function App() {
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-slate-400">
-                <li><a href="#" onClick={() => alert('Hilfe-Center ist in Arbeit!')} className="hover:text-white transition-colors">Hilfe-Center</a></li>
-                <li><a href="#" onClick={() => alert('Community-Forum kommt bald!')} className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" onClick={() => alert('Systemstatus ist stabil!')} className="hover:text-white transition-colors">Status</a></li>
-                <li><a href="#" onClick={() => alert('Datenschutzrichtlinien sind in Vorbereitung!')} className="hover:text-white transition-colors">Datenschutz</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Hilfe-Center ist in Arbeit!')} className="hover:text-white transition-colors">Hilfe-Center</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Community-Forum kommt bald!')} className="hover:text-white transition-colors">Community</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Systemstatus ist stabil!')} className="hover:text-white transition-colors">Status</a></li>
+                <li><a href="#" onClick={() => setCtaMessage('Datenschutzrichtlinien sind in Vorbereitung!')} className="hover:text-white transition-colors">Datenschutz</a></li>
               </ul>
             </div>
           </div>
